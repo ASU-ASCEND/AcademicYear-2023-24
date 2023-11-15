@@ -4,16 +4,10 @@
   Date: 11-15-22
   Description: 
   V6.0 
-  This code was constructed mainly using basic example code and StratoDevil's previous
-  launch code. The sensors used are: TMP36 (Temperature), mpu6050 (Accelerometer & Gyro), MPRLS (Pressure), 
-  amazon spi microsd card (mircoSD Card), SEN54(VOC)
+  This code was constructed mainly using basic example code and StratoDevil's previous launch code. The sensors used are: TMP36 (Temperature), BME688 (Pressure, Humidity, Temp, Gas), LSM9SD1 (Accelerometer & Gyro), SGP30 (Gas),  AdaFruit Micro-SD Breakout Board+ (micro-sd) & Adafruit Ultimate GPS (GPS)
 
   V6.1 Muhammed Topiwala
   Making final edits in initialization to ensure operation on PCB
-
-  v4.3 Feras Jayyusi, Sagan Richardson
-  Updated header to reflect changes and shortned names. (DO NOT CHANGE Latitude and Longitude header names. Needed for Elevation calculation script post-flight.
-  
  ***************************************************************************/
 
 #include <Wire.h>
