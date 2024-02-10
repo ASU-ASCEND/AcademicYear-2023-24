@@ -1,7 +1,7 @@
 //Importing classes setup by ASCEND Programming to abstract default libraries 
 //Every class supports: setPin(), verifyPin(), readData()/writeData() to interface with input sensors and output peripherals such as the SD Card
 #include "Sensor.h"
-#include "TMP36-Sensor.h"
+#include "TMP36Sensor.h"
 #include "BME680-Sensor.h"
 #include "SHT31-Sensor.h"
 #include "LSM9DS1-Sensor.h"
