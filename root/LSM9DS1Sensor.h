@@ -3,6 +3,7 @@
 
 #include "Sensor.h"
 #include <string.h>
+// #include <Adafruit_LSM9DS1.h>
 
 class LSM9DS1Sensor : public Sensor {
     private:
