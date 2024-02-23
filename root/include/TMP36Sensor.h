@@ -1,5 +1,6 @@
 #ifndef TMP36SENSOR_H
 #define TMP36SENSOR_H
+#include <string>
 
 #include "Sensor.h"
 
