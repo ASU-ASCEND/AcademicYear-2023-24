@@ -1,6 +1,8 @@
 #ifndef TMP36SENSOR_H
 #define TMP36SENSOR_H
 #include <string>
+// adds temperature sensor
+#include "TMP36.h" 
 
 #include "Sensor.h"
 
