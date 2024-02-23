@@ -1,5 +1,5 @@
-#ifndef BME680_H
-#define BME680_H
+#ifndef BME680SENSOR_H
+#define BME680SENSOR_H
 
 #include "Sensor.h"
 #include <string.h>
@@ -8,7 +8,7 @@
 #include <Wire.h>
 #include <SPI.h> 
 
-class BME680 : public Sensor {
+class BME680Sensor : public Sensor {
     private:
         Adafruit_BME680 bme;
         static constexpr const char* nameCompiled = "BME680";
@@ -20,5 +20,4 @@ class BME680 : public Sensor {
         String readData() override;
 };
 
-
-#endif BME680_H
+#endif

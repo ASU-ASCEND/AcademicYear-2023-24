@@ -1,16 +1,16 @@
-#include "BME680.h"
+#include "BME680Sensor.h"
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-const String& BME680::getSensorName() const {
+const String& BME680Sensor::getSensorName() const {
     return nameCompiled;
 }
 
-const String& BME680::getSensorCSVHeader() const {
+const String& BME680Sensor::getSensorCSVHeader() const {
     return csvHeaderCompiled;
 }
 
-bool BME680::verifyPin() {
+bool BME680Sensor::verifyPin() {
     if(!bme.begin()){
         return false;
     }
@@ -26,7 +26,7 @@ bool BME680::verifyPin() {
 }
 
 // "BME680 Temp C, BME680 Pressure hPa, BME680 Humidity %, BME680 Gas KOhms, BME680 Approx Alt m, "
-String BME680::readData() {
+String BME680Sensor::readData() {
     if(!bme.performReading()){
         return "-, -, -, -, -, ";
     }
