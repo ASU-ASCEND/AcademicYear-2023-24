@@ -7,9 +7,10 @@
 #include "LSM9DS1-Sensor.h"
 #include "SGP30-Sensor.h"
 #include "INA260-Sensor.h"
+#include "MTK3339Sensor.h"
 #include "SDCard.h"
 
-#Create class objects
+//Create class objects
 // MISO MOSI CS TX RX
 TMP36-Sensor tmp36 = new TMP36-Sensor();
 BME680-Sensor bme680 = new BME680-Sensor();
@@ -17,10 +18,11 @@ SHT31-Sensor sht31 = new SHT31-Sensor();
 LSM9DS1-Sensor lsm9ds1 = new LSM9DS1-Sensor();
 SGP30-Sensor sgp30 = new SGP30-Sensor();
 INA260-Sensor ina260 = new INA260-Sensor();
+MTK3339Sensor mtk3339 = new MTK3339Sensor();
 SDCard sd = new SDCard();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {&tmp36, &bme680, &sht31, &lsm9ds1, &sgp30, &ina260};
+Sensor* sensors[] = {&tmp36, &bme680, &sht31, &lsm9ds1, &sgp30, &ina260, &mtk3339};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 
