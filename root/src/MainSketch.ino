@@ -2,11 +2,11 @@
 //Every class supports: setPin(), verifyPin(), readData()/writeData() to interface with input sensors and output peripherals such as the SD Card
 #include "Sensor.h"
 #include "TMP36Sensor.h"
-#include "BME680-Sensor.h"
-#include "SHT31-Sensor.h"
-#include "LSM9DS1-Sensor.h"
-#include "SGP30-Sensor.h"
-#include "INA260-Sensor.h"
+#include "BME680Sensor.h"
+#include "SHT31Sensor.h"
+#include "LSM9DS1Sensor.h"
+#include "SGP30Sensor.h"
+#include "INA260Sensor.h"
 #include "MTK3339Sensor.h"
 #include "SDCard.h"
 

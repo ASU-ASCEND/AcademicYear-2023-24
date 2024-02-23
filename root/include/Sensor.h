@@ -11,6 +11,6 @@ public:
   //Accessor Method to access status of successful pin connection 
   virtual bool verifyPin();
   //Accessor Method to access observed environmental changes
-  virtual std::string readData() = 0;
+  virtual String readData() = 0;
 };
 #endif
