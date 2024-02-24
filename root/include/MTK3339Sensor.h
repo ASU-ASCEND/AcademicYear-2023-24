@@ -12,7 +12,7 @@ private:
 public:
     const arduino::String& getSensorName() const override;
     bool verifyPin() override;
-    std::string readData() override; 
+    arduino::String readData() override; 
 };
 
 #endif

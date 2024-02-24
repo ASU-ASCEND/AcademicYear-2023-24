@@ -9,5 +9,5 @@ bool MTK3339Sensor::verifyPin() {
     return true;
 }
 //Implementing virtual function: readData()
-std::string MTK3339Sensor::readData(){
+arduino::String MTK3339Sensor::readData(){
 }
