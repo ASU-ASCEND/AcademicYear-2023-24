@@ -10,7 +10,7 @@
 #define WIND_PIN A0
 #define TEMP_PIN A1
 
-class LSM6DSOXSensor : public Sensor {
+class MD0555Sensor : public Sensor {
     private:
         static constexpr const char* nameCompiled = "MD0555";
         static constexpr const char* csvHeaderCompiled = "MD0555 Wind Speed mph, MD0555 Temp C, ";
