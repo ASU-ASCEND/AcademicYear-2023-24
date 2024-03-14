@@ -1,13 +1,14 @@
-#include <TMP36Sensor.h>
+#include "MTK3339Sensor.h"
 
 //Implementing virtual function: getSensorName()
-const std::string& TMP36Sensor::getSensorName() const {
+const String& MTK3339Sensor::getSensorName() const {
   return nameCompiled;
 }
 //Implementing virtual function: verifyPin()
-bool TMP36Sensor::verifyPin() override{
+bool MTK3339Sensor::verifyPin() {
   return true;
 }
 //Implementing virtual function: readData()
-std::string TMP36Sensor::readData(){
+String MTK3339Sensor::readData(){
+  return ", ";
 }

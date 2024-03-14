@@ -17,8 +17,8 @@ String GeigerSensor::readData(){
 
     // reads serial output --> "CPS, #####, CPM, #####, uSv/hr, ###.##, SLOW|FAST|INST"
     // I think it's deliminated by CRLF (carriage return, line feed)
-    Serial.readStringUntil('\r\n'); // flush input (we don't know where in the line we're connecting
-    String input = Serial.readStringUntil('\r\n'); // read the line 
+    //Serial.readStringUntil('\r'); // flush input (we don't know where in the line we're connecting
+    String input = " ";// Serial.readStringUntil('\r'); // read the line 
     Serial.println(input);  // print it 
     // for(int i = 0; i < 7; i++){ 
     //     String input = Serial.readStringUntil(','); 
@@ -28,7 +28,7 @@ String GeigerSensor::readData(){
     String str = "";
     String values[7];
     int curr = 0;
-    for(int i = 0; i < input.length(); i++){
+    for(unsigned int i = 0; i < input.length(); i++){
         str += input[i];
         if(input[i] == ','){
             values[curr] = str;
