@@ -11,9 +11,9 @@ private:
   //Name for the sensor to be used in CSV header and console
   static constexpr const char* nameCompiled = "TMP36";
 public:
-  const std::string& getSensorName() const override;
+  const String& getSensorName() const override;
   bool verifyPin() override;
-  std::string readData() override; 
+  String readData() override; 
 };
 
 #endif
