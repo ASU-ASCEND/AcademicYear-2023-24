@@ -2,14 +2,14 @@
 #define SENSOR_H
 
 #include <Arduino.h> //Needed for Arduino functionalities
-#include <string> //Needed for returning string from writeData()
+#include <string.h> //Needed for returning string from writeData()
 
 class Sensor {
 public:
   //Accessor Method to access name of sensor
   virtual const String& getSensorName() const = 0;
   //Accessor Method to access status of successful pin connection 
-  virtual bool verifyPin();
+  virtual bool verifyPin() = 0;
   //Accessor Method to access observed environmental changes
   virtual String readData() = 0;
 };
