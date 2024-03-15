@@ -1,16 +1,15 @@
 #include "Adafruit_SGP30.h"
 #include <Wire.h>
 
-const std::string& SGP30Sensor::getSensorName() const {
+const String& SGP30Sensor::getSensorName() const {
     return nameCompiled;
 }
 
-const String& LSM9DS1Sensor::getSensorCSVHeader() const {
+const String& SGP39Sensor::getSensorCSVHeader() const {
     return csvHeaderCompiled;
 }
 
 bool SGP30Sensor::verifyPin(){
-
     return sgp.begin();
 }
 
@@ -23,7 +22,7 @@ String SGP30Sensor::readData(){
         return "H2/Ethanol Fail";
     }
     
-    return String(sgp.TVOC) + ", " + String(sgp.eCO2) + ", " + String(sgp.rawH2) + ", " + String(spg.rawEthanol);
+    return String(sgp.TVOC) + ", " + String(sgp.eCO2) + ", " + String(sgp.rawH2) + ", " + String(sgp.rawEthanol);
 
 }
 
