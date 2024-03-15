@@ -2,7 +2,7 @@
 
 const String& SDCard::getSDCardName() const {
     // Return the SD card name
-    return nameCompiled;
+    return sdCardName;
 }
 
 bool SDCard::verifyPin() {
