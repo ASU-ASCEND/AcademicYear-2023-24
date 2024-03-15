@@ -1,6 +1,7 @@
 #ifndef MTK3339SENSOR_H
 #define MTK3339SENSOR_H
 #include <string>
+#include <Arduino.h>
 #include <Adafruit_GPS.h>
 
 #include "Sensor.h"

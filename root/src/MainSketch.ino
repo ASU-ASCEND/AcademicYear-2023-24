@@ -12,17 +12,20 @@
 
 //Create class objects
 // MISO MOSI CS TX RX
-TMP36Sensor tmp36 = new TMP36Sensor();
-BME680Sensor bme680 = new BME680Sensor();
-SHT31Sensor sht31 = new SHT31Sensor();
-LSM9DS1Sensor lsm9ds1 = new LSM9DS1Sensor();
-SGP30Sensor sgp30 = new SGP30Sensor();
-INA260Sensor ina260 = new INA260Sensor();
-MTK3339Sensor mtk3339 = new MTK3339Sensor();
-SDCard sd = new SDCard();
+TMP36Sensor* tmp36 = new TMP36Sensor();
+BME680Sensor* bme680 = new BME680Sensor();
+SHT31Sensor* sht31 = new SHT31Sensor();
+LSM9DS1Sensor* lsm9ds1 = new LSM9DS1Sensor();
+SGP30Sensor* sgp30 = new SGP30Sensor();
+INA260Sensor* ina260 = new INA260Sensor();
+MTK3339Sensor* mtk3339 = new MTK3339Sensor();
+SDCard* sd = new SDCard();
+
+// declaration
+bool verifyPin();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {&tmp36, &bme680, &sht31, &lsm9ds1, &sgp30, &ina260, &mtk3339};
+Sensor* sensors[] = {tmp36, bme680, sht31, lsm9ds1, sgp30, ina260, mtk3339};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 
@@ -47,6 +50,7 @@ void loop(){
   //Writes data into SD Card if communication with SD Card and at least one SD Card is successful
   writeData();
 }
+
 bool verifyPin() {
   //Create an array for PinVerification
   bool pinVerificationResults[numSensors];
@@ -67,6 +71,7 @@ bool verifyPin() {
     }
     return false; // All pin verification failed
 }
+
 bool writeData(){
   //.
   //.
