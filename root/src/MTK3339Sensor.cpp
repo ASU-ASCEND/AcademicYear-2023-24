@@ -6,7 +6,7 @@ const String& MTK3339Sensor::getSensorName() const {
 }
 //Implementing virtual function: verifyPin()
 bool MTK3339Sensor::verifyPin() {
-  return true;
+  return true; 
 }
 //Implementing virtual function: readData()
 String MTK3339Sensor::readData(){
