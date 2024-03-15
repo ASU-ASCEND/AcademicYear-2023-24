@@ -8,6 +8,7 @@
 #include "Sensor.h"
 
 class TMP36Sensor : public Sensor {
+<<<<<<< HEAD
   private:
     //Name for the sensor to be used in CSV header and console
     static constexpr const char* nameCompiled = "TMP36";
@@ -15,6 +16,18 @@ class TMP36Sensor : public Sensor {
     const String& getSensorName() const override;
     bool verifyPin() override;
     String readData() override; 
+=======
+private:
+  //Name for the sensor to be used in CSV header and console
+  static constexpr const char* nameCompiled = "TMP36";
+  //CSV header for the sensor to be used in CSV header and console
+  static constexpr const char* csvHeaderCompiled = "TMP36 Temperature, ";
+public:
+  const String& getSensorName() const override;
+  const String& getSensorCSVHeader() const override; 
+  bool verifyPin() override;
+  String readData() override; 
+>>>>>>> main
 };
 
 #endif

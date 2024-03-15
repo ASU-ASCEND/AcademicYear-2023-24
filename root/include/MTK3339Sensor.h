@@ -10,6 +10,7 @@ class MTK3339Sensor : public Sensor {
 private:
     //Name for the sensor to be used in CSV header and console
     static constexpr const char* nameCompiled = "MTK3339";
+    
 public:
     const String& getSensorName() const override;
     bool verifyPin() override;
