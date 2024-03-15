@@ -23,11 +23,14 @@ SDCard* sd = new SDCard();
 
 // declaration
 bool verifyPin();
+void writeData();
 
 // Create an array of Sensor pointers
 Sensor* sensors[] = {tmp36, bme680, sht31, lsm9ds1, sgp30, ina260, mtk3339};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
+bool pinVerificationResults[numSensors];
+String fileName; 
 
 void setup(){
   // Call verifyPin() to check status of successful sensor communication
@@ -42,9 +45,13 @@ void setup(){
   }
   Serial.println("Stopping Execution. SD card communication failed");
   //Initialise CSV header to SD card
-  //.
-  //.
-  //.
+  String header = "";
+
+  for(int i = 0; i < numSensors; i++){
+    if(pinVerificationResults[i]){
+      header += sensors[i]->getSensorCSVHeader();
+    }
+  }
 }
 void loop(){
   //Writes data into SD Card if communication with SD Card and at least one SD Card is successful
@@ -53,7 +60,6 @@ void loop(){
 
 bool verifyPin() {
   //Create an array for PinVerification
-  bool pinVerificationResults[numSensors];
   for (int i = 0; i < numSensors; i++){
     pinVerificationResults[i] = sensors[i]->verifyPin();
   }
@@ -72,9 +78,15 @@ bool verifyPin() {
     return false; // All pin verification failed
 }
 
-bool writeData(){
-  //.
-  //.
-  //.
-  return false;
+void writeData(){
+  String output = "";
+
+  for(int i = 0; i < numSensors; i++){
+    if(pinVerificationResults[i]){
+      output += sensors[i]->readData();
+    }
+  }
+
+  // write to sd card
+  //sd->writeData(fileName, output);
 }
