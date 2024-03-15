@@ -1,0 +1,18 @@
+#######################################
+# Syntax Coloring Map For TMP36
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+TMP36	KEYWORD1
+     				
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+		
+getTempF	KEYWORD2
+getTempC	KEYWORD2
+getTempK	KEYWORD2
+getVoltage	KEYWORD2

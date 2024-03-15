@@ -1,13 +1,17 @@
 #include <MTK3339Sensor.h>
 
 //Implementing virtual function: getSensorName()
-const arduino::String& MTK3339Sensor::getSensorName() const {
+const String& MTK3339Sensor::getSensorName() const {
     return nameCompiled;
 }
+//Implementing virtual function: getSensorType()
+const String& MTK3339Sensor::getSensorCSVHeader() const {
+    return csvHeaderCompiled;
+}
 //Implementing virtual function: verifyPin()
-bool MTK3339Sensor::verifyPin() {
+bool MTK3339Sensor::verifyPin() override {
     return true;
 }
 //Implementing virtual function: readData()
-arduino::String MTK3339Sensor::readData(){
+String MTK3339Sensor::readData(){
 }
