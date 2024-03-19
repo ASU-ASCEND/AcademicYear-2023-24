@@ -1,19 +1,19 @@
-// Wind Sensor
+// Wind Sensor and temp 
 
-#ifndef MD0555SENSOR_H 
-#define MD0555SENSOR_H
+#ifndef ANALOGSENSOR_H 
+#define ANALOGSENSOR_H
 
 #include "Sensor.h"
 #include <string>
 #include <Arduino.h>
 // need to changed to the correct ones
 #define WIND_PIN A0
-#define TEMP_PIN A1
+#define PT1000_PIN A1
 
-class MD0555Sensor : public Sensor {
+class AnalogSensor : public Sensor {
     private:
-        static constexpr const char* nameCompiled = "MD0555";
-        static constexpr const char* csvHeaderCompiled = "MD0555 Wind Speed mph, MD0555 Temp C, ";
+        static constexpr const char* nameCompiled = "Analog";
+        static constexpr const char* csvHeaderCompiled = "MD0555 Wind Speed RAW, PT1000 Temp RAW, ";
     public:
         const String& getSensorName() const override;
         const String& getSensorCSVHeader() const; 
