@@ -27,8 +27,9 @@ String MTK3339Sensor::readData(){
     // we end up not listening and catching other sentences!
     // so be very wary if using OUTPUT_ALLDATA and trying to print out data
     Serial.println(GPS.lastNMEA()); // this also sets the newNMEAreceived() flag to false
-    if (!GPS.parse(GPS.lastNMEA())) // this also sets the newNMEAreceived() flag to false
-      return; // we can fail to parse a sentence in which case we should just wait for another
+    if (!GPS.parse(GPS.lastNMEA())){ // this also sets the newNMEAreceived() flag to false
+      return "-, -, -, -, -, -, -, "; // we can fail to parse a sentence in which case we should just wait for another
+    }
   }
 
   //Serial.println(GPS.milliseconds);
@@ -50,5 +51,6 @@ String MTK3339Sensor::readData(){
       //Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
       return String(GPS.day) + "/ " + String(GPS.month) + "/ " + String(GPS.year) + ", " + String(GPS.latitude) + ", " + String(GPS.longitude) + ", " + String(GPS.speed) + ", " + String(GPS.angle) + ", " + String(GPS.altitude) + ", " + String(GPS.satellites) + ", ";
     }
+    return "-, -, -, -, -, -, -, ";
 }
 
