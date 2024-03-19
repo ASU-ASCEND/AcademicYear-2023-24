@@ -8,9 +8,11 @@
 #include <Arduino.h>
 // need to changed to the correct ones
 #define GEIGER_PIN A2
+#define MILLIS_BETWEEN_READINGS 10000 // 10 seconds
 
 class GeigerSlowSensor : public Sensor {
     private:
+        int timer; 
         String nameCompiled = "GeigerSlow";
         String csvHeaderCompiled = "GeigerSlow CPS, ";
     public:

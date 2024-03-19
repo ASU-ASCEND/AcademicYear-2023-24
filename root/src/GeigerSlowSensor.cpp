@@ -9,10 +9,15 @@ const String& GeigerSlowSensor::getSensorCSVHeader() const {
 } 
 
 bool GeigerSlowSensor::verifyPin() {
+    timer = millis();
     return true;
 }
 
 String GeigerSlowSensor::readData() {
+    if(millis() - timer < MILLIS_BETWEEN_READINGS){ // if it hasn't been 10 seconds
+        return "-, ";
+    }
+    timer = millis();
     int start = millis();
     int count = 0;
     bool pulsing = false;
