@@ -17,4 +17,5 @@ bool TMP36Sensor::verifyPin() {
 }
 //Implementing virtual function: readData()
 String TMP36Sensor::readData(){
+  return "-, ";
 }
