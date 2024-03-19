@@ -5,7 +5,7 @@ const String& INA260Sensor::getSensorName() const {
 }
 
 const String& INA260Sensor::getSensorCSVHeader() const {
-    return csvHeaderCompiled;
+    return String(csvHeaderCompiled);
 } 
 
 bool INA260Sensor::verifyPin() {

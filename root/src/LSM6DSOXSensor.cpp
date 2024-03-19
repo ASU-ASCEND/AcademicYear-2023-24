@@ -5,7 +5,7 @@ const String& LSM6DSOXSensor::getSensorName() const {
 }
 
 const String& LSM6DSOXSensor::getSensorCSVHeader() const {
-    return csvHeaderCompiled;
+    return String(csvHeaderCompiled);
 }
 
 bool LSM6DSOXSensor::verifyPin() {

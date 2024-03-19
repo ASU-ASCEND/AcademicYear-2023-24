@@ -5,7 +5,7 @@ const String& GeigerSensor::getSensorName() const {
 }
 
 const String& GeigerSensor::getSensorCSVHeader() const {
-    return csvHeaderCompiled;
+    return String(csvHeaderCompiled);
 }
 
 bool GeigerSensor::verifyPin() {

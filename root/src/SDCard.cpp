@@ -6,7 +6,7 @@ const String& SDCard::getSDCardName() const {
 }
 
 bool SDCard::verifyPin() {
-    if (!SD.begin(7)) {
+    if (!SD.begin(8)) {
         return false;
   }
     return true;

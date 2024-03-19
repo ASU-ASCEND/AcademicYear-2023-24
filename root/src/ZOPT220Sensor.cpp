@@ -6,7 +6,7 @@ const arduino::String& ZOPT220Sensor::getSensorName() const {
 }
 
 const arduino::String& ZOPT220Sensor::getSensorCSVHeader() const {
-    return csvHeaderCompiled;
+    return String(csvHeaderCompiled);
 } 
 
 bool ZOPT220Sensor::verifyPin(){

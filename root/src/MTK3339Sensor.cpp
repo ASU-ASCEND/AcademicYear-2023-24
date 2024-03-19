@@ -6,7 +6,7 @@ const String& MTK3339Sensor::getSensorName() const {
 }
 //Implementing virtual accessor function: getSensorType()
 const String& MTK3339Sensor::getSensorCSVHeader() const {
-    return csvHeaderCompiled;
+    return String(csvHeaderCompiled);
 }
 //Implementing virtual accessor function: verifyPin()
 bool MTK3339Sensor::verifyPin() {

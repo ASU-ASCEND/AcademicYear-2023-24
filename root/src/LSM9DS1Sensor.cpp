@@ -5,7 +5,7 @@ const String& LSM9DS1Sensor::getSensorName() const {
 }
 
 const String& LSM9DS1Sensor::getSensorCSVHeader() const {
-    return csvHeaderCompiled;
+    return String(csvHeaderCompiled);
 }
 
 bool LSM9DS1Sensor::verifyPin() {
