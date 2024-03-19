@@ -14,7 +14,7 @@ bool MAX31865Sensor::verifyPin() {
 }
 
 String MAX31865Sensor::readData() {
-                        // radio 
+                        // ratio 
     float resistance = (thermo.readRTD() / 32768.0) * RREF;
     
     float tempC = thermo.temperature(RNOMINAL, RREF); 
