@@ -67,9 +67,9 @@ void setup(){
       header += sensors[i]->getSensorCSVHeader();
     }
   }
-  header += "\n";
+  // header += "\n";
   Serial.println(header);
-  // //sd->writeData(header);
+  sd->writeData(header);
   delay(1000);
 }
 bool ledVal = 0;
@@ -110,9 +110,8 @@ void writeData(){
     }
   }
 
-  output += "\n";
+  //output += "\n"; unnecessary because we write to file with a println
 
-  Serial.print(output);
-
-  //sd->writeData(output);
+  Serial.println(output);
+  sd->writeData(output);
 }
