@@ -26,11 +26,10 @@ bool verifyPin();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {tmp36, bme680, sht31, lsm9ds1, sgp30, ina260, mtk3339};
+Sensor* sensors[] = {tmp36, bme680, sht31, lsm9ds1, sgp30, ina260, mtk3339 };
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];
-String fileName; 
 
 void setup(){
   // Call verifyPin() to check status of successful sensor communication
@@ -79,7 +78,7 @@ bool verifyPin() {
 }
 
 void writeData(){
-  String output = "";
+  String output = String(millis()) + ", ";
 
   for(int i = 0; i < numSensors; i++){
     if(pinVerificationResults[i]){
@@ -87,6 +86,6 @@ void writeData(){
     }
   }
 
-  // write to sd card
-  //sd->writeData(fileName, output);
+  output += "\n";
+  sd->writeData(output);
 }

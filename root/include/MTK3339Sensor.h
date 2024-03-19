@@ -5,6 +5,7 @@
 #include <Adafruit_GPS.h>
 
 #include "Sensor.h"
+Adafruit_GPS GPS(&Wire);
 
 class MTK3339Sensor : public Sensor {
 private:

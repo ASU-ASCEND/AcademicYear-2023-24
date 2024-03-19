@@ -5,7 +5,7 @@
 #include <string.h> //Needed for returning string from writeData()
 
 class Sensor {
-public:
+ public:
   //Accessor Method to access name of sensor
   virtual const String& getSensorName() const = 0;
   //Accessor Method to access CSV header of sensor
