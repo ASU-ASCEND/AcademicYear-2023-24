@@ -1,4 +1,5 @@
 #include "ZOPT220Sensor.h"
+#include "ZOPT220x_Control.h"
 
 const arduino::String& ZOPT220Sensor::getSensorName() const {
     return nameCompiled;
@@ -39,3 +40,4 @@ arduino::String ZOPT220Sensor::readData() {
     return String(uvIndex) + ", " + String(als) + ", "; 
 
 }
+

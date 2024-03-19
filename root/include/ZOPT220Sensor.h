@@ -2,7 +2,7 @@
 #define ZOPT220SENSOR_H
 
 #include "Sensor.h"
-#include "ZOPT220x_Control.ino"
+// #include "ZOPT220x_Control.ino"
 #include <string.h>
 #include <Arduino.h>
 #include <Wire.h>
