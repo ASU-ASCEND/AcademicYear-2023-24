@@ -10,7 +10,10 @@
 #include "MTK3339Sensor.h"
 #include "AnalogSensor.h"
 //#include "GeigerSensor.h"
+#include "GeigerSlowSensor.h"
 #include "ZOPT220Sensor.h"
+#include "LSM6DSOXSensor.h"
+
 #include "SDCard.h"
 
 
@@ -20,11 +23,13 @@ TMP36Sensor* tmp36 = new TMP36Sensor();
 BME680Sensor* bme680 = new BME680Sensor();
 SHT31Sensor* sht31 = new SHT31Sensor();
 LSM9DS1Sensor* lsm9ds1 = new LSM9DS1Sensor();
+LSM6DSOXSensor* lsm6dsox = new LSM6DSOXSensor();
 SGP30Sensor* sgp30 = new SGP30Sensor();
 INA260Sensor* ina260 = new INA260Sensor();
 MTK3339Sensor* mtk3339 = new MTK3339Sensor();
 AnalogSensor* analog = new AnalogSensor();
 //GeigerSensor* geiger = new GeigerSensor();
+GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
 ZOPT220Sensor* uv = new ZOPT220Sensor();
 SDCard* sd = new SDCard();
 
@@ -33,7 +38,7 @@ bool verifyPin();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {tmp36, bme680, sht31, lsm9ds1, sgp30, ina260, mtk3339, analog, uv };
+Sensor* sensors[] = {tmp36, bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];
