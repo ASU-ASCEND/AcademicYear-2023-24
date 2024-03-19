@@ -10,7 +10,7 @@
 class SDCard {
 private:
   //Name for the sensor to be used in CSV header and console
-  static constexpr const char* sdCardName = "SDCard";
+  String sdCardName = "SDCard";
   //creates a file object 
   File fileObject;
   //Name for a saved file

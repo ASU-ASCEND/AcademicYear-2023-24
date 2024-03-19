@@ -40,29 +40,40 @@ bool pinVerificationResults[numSensors];
 
 void setup(){
   Serial.begin(9600);
+  delay(10000);
   // Call verifyPin() to check status of successful sensor communication
-    if (verifyPin()) {
-        Serial.println("Moving on. At least one sensor has successful communication.");
-    } else {
-        Serial.println("Stopping Execution. All sensor communications failed.");
-    }
-  //verify comms with SD Card
+  if (verifyPin()) {
+      Serial.println("Moving on. At least one sensor has successful communication.");
+  } else {
+      Serial.println("Stopping Execution. All sensor communications failed.");
+  }
+  // //verify comms with SD Card
   if (sd->verifyPin()) {
    Serial.println("Moving on. SD card has successful communication");
   }
-  Serial.println("Stopping Execution. SD card communication failed");
-  //Initialise CSV header to SD card
-  String header = "";
+  else {
+    Serial.println("SD card communication failed");
+  }
+  // //Initialise CSV header to SD card
+  String header = "Millis, ";
 
   for(int i = 0; i < numSensors; i++){
     if(pinVerificationResults[i]){
       header += sensors[i]->getSensorCSVHeader();
     }
   }
+  header += "\n";
+  Serial.println(header);
+  // //sd->writeData(header);
+  delay(1000);
 }
+bool ledVal = 0;
 void loop(){
+  delay(10);
   //Writes data into SD Card if communication with SD Card and at least one SD Card is successful
   writeData();
+  digitalWrite(LED_BUILTIN, ledVal);
+  ledVal = !ledVal;
 }
 
 bool verifyPin() {
@@ -95,5 +106,8 @@ void writeData(){
   }
 
   output += "\n";
-  sd->writeData(output);
+
+  Serial.print(output);
+
+  //sd->writeData(output);
 }

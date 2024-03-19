@@ -5,7 +5,7 @@ const String& SGP30Sensor::getSensorName() const {
 }
 
 const String& SGP30Sensor::getSensorCSVHeader() const {
-    return String(csvHeaderCompiled);
+    return csvHeaderCompiled;
 }
 
 bool SGP30Sensor::verifyPin(){

@@ -7,7 +7,7 @@ const String& BME680Sensor::getSensorName() const {
 }
 
 const String& BME680Sensor::getSensorCSVHeader() const {
-    return String(csvHeaderCompiled);
+    return csvHeaderCompiled;
 }
 
 bool BME680Sensor::verifyPin() {

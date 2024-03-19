@@ -5,7 +5,7 @@ const arduino::String& SHT31Sensor::getSensorName() const {
 }
 
 const arduino::String& SHT31Sensor::getSensorCSVHeader() const {
-    return String(csvHeaderCompiled);
+    return csvHeaderCompiled;
 }
 
 bool SHT31Sensor::verifyPin() {

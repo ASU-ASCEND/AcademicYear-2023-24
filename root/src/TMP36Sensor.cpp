@@ -7,7 +7,7 @@ const String& TMP36Sensor::getSensorName() const {
 
 //Implementing virtual function: getSensorCSVHeader()
 const String& TMP36Sensor::getSensorCSVHeader() const {
-  return String(csvHeaderCompiled);
+  return csvHeaderCompiled;
 }
 
 //Implementing virtual function: verifyPin()

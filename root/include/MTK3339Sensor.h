@@ -11,8 +11,8 @@ class MTK3339Sensor : public Sensor {
 private:
     Adafruit_GPS GPS = Adafruit_GPS(&Wire);
     //Name for the sensor to be used in CSV header and console
-    static constexpr const char* nameCompiled = "MTK3339";
-    static constexpr const char* csvHeaderCompiled = "MTK3339 Date, MTK3339 Latitude, MTK3339 Longitude, MTK3339 Speed, MTK3339 Angle, MTK3339 Altitude, MTK3339 Satellites";
+    String nameCompiled = "MTK3339";
+    String csvHeaderCompiled = "MTK3339 Date, MTK3339 Latitude, MTK3339 Longitude, MTK3339 Speed, MTK3339 Angle, MTK3339 Altitude, MTK3339 Satellites";
     
 public:
     const String& getSensorName() const override;

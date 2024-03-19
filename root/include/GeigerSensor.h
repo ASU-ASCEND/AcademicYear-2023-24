@@ -10,8 +10,8 @@
 
 class GeigerSensor : public Sensor {
     private:
-        static constexpr const char* nameCompiled = "Geiger Counter";
-        static constexpr const char* csvHeaderCompiled = "Geiger CPS, Geiger CPM, Geiger uSv/hr, Geiger Mode, ";
+        String nameCompiled = "Geiger Counter";
+        String csvHeaderCompiled = "Geiger CPS, Geiger CPM, Geiger uSv/hr, Geiger Mode, ";
     public:
         const String& getSensorName() const override;
         const String& getSensorCSVHeader() const; 

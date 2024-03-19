@@ -5,11 +5,12 @@ const String& GeigerSensor::getSensorName() const {
 }
 
 const String& GeigerSensor::getSensorCSVHeader() const {
-    return String(csvHeaderCompiled);
+    return csvHeaderCompiled;
 }
 
 bool GeigerSensor::verifyPin() {
     Serial.begin(9600, SERIAL_8N1); // default protocal - added to be explicit 
+    return Serial;
 }
 
 String GeigerSensor::readData(){

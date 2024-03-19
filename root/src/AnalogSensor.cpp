@@ -5,7 +5,7 @@ const String& AnalogSensor::getSensorName() const {
 }
 
 const String& AnalogSensor::getSensorCSVHeader() const {
-    return String(csvHeaderCompiled);
+    return csvHeaderCompiled;
 }
 
 bool AnalogSensor::verifyPin() {
