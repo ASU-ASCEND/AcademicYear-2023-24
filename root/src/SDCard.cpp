@@ -6,7 +6,7 @@ const String& SDCard::getSDCardName() const {
 }
 
 bool SDCard::verifyPin() {
-    if (!SD.begin(CHIP_SELECT)) {
+    if (!SD.begin(SD_CHIP_SELECT)) {
         return false;
     }
 
@@ -28,7 +28,7 @@ bool SDCard::verifyPin() {
     // else {
     //     Serial.println("ERROR - FILE NOT OPENING IN VERIFYPIN()");
     // }
-    logFileName = "datalog1.csv";
+    logFileName = "dLog.csv";
 
     return true;
 }
@@ -42,7 +42,7 @@ bool SDCard::writeData(String dataRecord) {
     if (fileObject) {
         Serial.println("STARTING WRITE...");
         // Write the dataRecord to the file
-        fileObject.println("dataRecord");
+        fileObject.println(dataRecord);
         // Close the file to ensure data is written to the SD card
         fileObject.close();
         //fileObject.flush();

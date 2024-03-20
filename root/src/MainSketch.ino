@@ -1,5 +1,7 @@
 //Importing classes setup by ASCEND Programming to abstract default libraries 
 //Every class supports: setPin(), verifyPin(), readData()/writeData() to interface with input sensors and output peripherals such as the SD Card
+
+#include <Arduino.h> // Include the Arduino library
 #include "Sensor.h"
 #include "TMP36Sensor.h"
 #include "BME680Sensor.h"
@@ -13,7 +15,6 @@
 #include "GeigerSlowSensor.h"
 #include "ZOPT220Sensor.h"
 #include "LSM6DSOXSensor.h"
-
 #include "SDCard.h"
 
 
@@ -38,7 +39,7 @@ bool verifyPin();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {tmp36, bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow};
+Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];

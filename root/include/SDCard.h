@@ -5,7 +5,7 @@
 #include <SPI.h>
 #include <SD.h>
 
-#define CHIP_SELECT 7
+#define SD_CHIP_SELECT 7
 
 class SDCard {
 private:
