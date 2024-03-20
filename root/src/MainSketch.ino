@@ -15,6 +15,7 @@
 #include "GeigerSlowSensor.h"
 #include "ZOPT220Sensor.h"
 #include "LSM6DSOXSensor.h"
+#include "MAX31865Sensor.h"
 //#include "SDCard.h"
 
 #include <Arduino.h>
@@ -31,6 +32,10 @@
 
 #define SD_CHIP_SELECT 7
 
+// indicator flags
+// bool errorFlag = false;
+// bool noContinuity = false;
+
 //Create class objects
 // MISO MOSI CS TX RX
 TMP36Sensor* tmp36 = new TMP36Sensor();
@@ -45,14 +50,18 @@ AnalogSensor* analog = new AnalogSensor();
 //GeigerSensor* geiger = new GeigerSensor();
 GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
 ZOPT220Sensor* uv = new ZOPT220Sensor();
+MAX31865Sensor* pt = new MAX31865Sensor();
 // SDCard* sd = new SDCard();
+
+#define LED_PIN 9
+#define STATUS_PIN 10
 
 // declaration
 //bool verifyPin();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow};
+Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow, pt};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];
@@ -78,6 +87,7 @@ void setup(){
   // else {
   //   Serial.println("SD card communication failed");
   // }
+
   while(!SD.begin(SD_CHIP_SELECT)){
     Serial.println("SD Card not working");
   }
@@ -88,7 +98,8 @@ void setup(){
   for (int i = 0; i < 1000; i++) {
     fileName = "d" + String(i) + ".csv";
     if (!SD.exists(fileName)) {
-        // Open the file for writing
+        //if(i > 0) noContinuity = true;
+        // Name the file for writing
         Serial.println("Opened new file: " + fileName);
         break;
     }
@@ -149,8 +160,10 @@ void setup(){
   // delay(1000);
 }
 bool ledVal = 0;
+// bool statusVal = 0;
 void loop(){
   delay(100);
+
   String ourData = String(millis()) + ", "; 
 
   for(int i = 0; i < numSensors; i++){
@@ -187,8 +200,12 @@ void loop(){
 
   //Writes data into SD Card if communication with SD Card and at least one SD Card is successful
   // writeData();
-  // digitalWrite(LED_BUILTIN, ledVal);
-  // ledVal = !ledVal;
+  digitalWrite(LED_PIN, ledVal);
+  ledVal = !ledVal;
+  // if(noContinuity){
+  //   digitalWrite(STATUS_PIN, statusVal);
+  //   statusVal = !statusVal;
+  // }
   // delay(500);
 }
 
@@ -212,68 +229,68 @@ bool verifyPin() {
     return false; // All pin verification failed
 }
 
-// void writeData(){
-//   String output = String(millis()) + ", ";
+void writeData(){
+  String output = String(millis()) + ", ";
 
-//   // for(int i = 0; i < numSensors; i++){
-//   //   if(pinVerificationResults[i]){
-//   //     output += sensors[i]->readData();
-//   //   }
-//   // }
+  // for(int i = 0; i < numSensors; i++){
+  //   if(pinVerificationResults[i]){
+  //     output += sensors[i]->readData();
+  //   }
+  // }
 
-//   Serial.println(output);
+  Serial.println(output);
 
-//   myFile = SD.open(fileName, FILE_WRITE);
+  myFile = SD.open(fileName, FILE_WRITE);
 
-//   if(myFile){
-//     myFile.println("data");
-//     myFile.close();
-//     Serial.println("done.");
-//   }
-//   else {
-//     Serial.println("Error opening");
-//   }
+  if(myFile){
+    myFile.println("data");
+    myFile.close();
+    Serial.println("done.");
+  }
+  else {
+    Serial.println("Error opening");
+  }
 
 
-//   myFile = SD.open(fileName, FILE_READ);
+  myFile = SD.open(fileName, FILE_READ);
 
-//   if(myFile){
-//     while(myFile.available()){
-//       Serial.write(myFile.read());
-//     }
-//     myFile.close();
-//     Serial.println("\nDone.");
-//   }
-//   else {
-//     Serial.println("Can't write");
-//   }
+  if(myFile){
+    while(myFile.available()){
+      Serial.write(myFile.read());
+    }
+    myFile.close();
+    Serial.println("\nDone.");
+  }
+  else {
+    Serial.println("Can't write");
+  }
 
-//   // myFile = SD.open(fileName, FILE_WRITE);
+  // myFile = SD.open(fileName, FILE_WRITE);
 
-//   // if(myFile){
-//   // //   myFile.println(output);
-//   //   myFile.close();
-//   // //   Serial.println("done.");
-//   // }
-//   // else {
-//   //   Serial.println("Error opening");
-//   // }
-//   // delay(2000);
+  // if(myFile){
+  // //   myFile.println(output);
+  //   myFile.close();
+  // //   Serial.println("done.");
+  // }
+  // else {
+  //   Serial.println("Error opening");
+  // }
+  // delay(2000);
 
-//   // myFile = SD.open(fileName, FILE_READ);
+  // myFile = SD.open(fileName, FILE_READ);
 
-//   // if(myFile){
-//   //   while(myFile.available()){
-//   //     Serial.write(myFile.read());
-//   //   }
-//   //   myFile.close();
-//   //   Serial.println("\nDone.");
-//   // }
-//   // else {
-//   //   Serial.println("Can't write");
-//   // }
-//   //sd->writeData(output);
-//   // fileObject = SD.open(logFileName, FILE_WRITE);
-//   // fileObject.println(output);
-//   // fileObject.close();
-// }
+  // if(myFile){
+  //   while(myFile.available()){
+  //     Serial.write(myFile.read());
+  //   }
+  //   myFile.close();
+  //   Serial.println("\nDone.");
+  // }
+  // else {
+  //   Serial.println("Can't write");
+  // }
+  //sd->writeData(output);
+  // fileObject = SD.open(logFileName, FILE_WRITE);
+  // fileObject.println(output);
+  // fileObject.close();
+}
