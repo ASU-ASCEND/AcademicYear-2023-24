@@ -3,7 +3,7 @@
 #define SGP30SENSOR_H
 
 #include "Sensor.h"
-#include <string>
+#include <string.h>
 #include <stdint.h>
 #include <Arduino.h>
 #include "Adafruit_SGP30.h"

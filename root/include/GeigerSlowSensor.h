@@ -4,7 +4,7 @@
 #define GEIGERSLOWSENSOR_H
 
 #include "Sensor.h"
-#include <string>
+#include <string.h>
 #include <Arduino.h>
 // need to changed to the correct ones
 #define GEIGER_PIN A2

@@ -12,7 +12,7 @@ private:
   //Name for the sensor to be used in CSV header and console
   String sdCardName = "SDCard";
   //creates a file object 
-  File fileObject;
+  SDLib::File fileObject;
   //Name for a saved file
   String logFileName;
 public:

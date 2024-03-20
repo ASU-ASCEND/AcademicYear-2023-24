@@ -1,6 +1,6 @@
 #ifndef MTK3339SENSOR_H
 #define MTK3339SENSOR_H
-#include <string>
+#include <string.h>
 #include <Arduino.h>
 
 #include "Sensor.h"
@@ -15,7 +15,7 @@ private:
     //Name for the sensor to be used in CSV header and console
     Adafruit_MAX31865 thermo; 
     String nameCompiled = "MAX31865";
-    String csvHeaderCompiled = "MAX31865 Resistance, MAX31865 Temp C";
+    String csvHeaderCompiled = "MAX31865 Resistance, MAX31865 Temp C, ";
     
 public:
     const String& getSensorName() const override;

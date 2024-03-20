@@ -2,7 +2,7 @@
 #define INA260SENSOR_H
 
 #include "Sensor.h"
-#include <string>
+#include <string.h>
 #include <Arduino.h>
 #include "Adafruit_INA260.h"
 

@@ -19,5 +19,5 @@ arduino::String SHT31Sensor::readData() {
     // return "-. -. ";
     float t = sht31.readTemperature();
     float h = sht31.readHumidity();
-    return String(t) + ", " + String(h) + ", ";
+    return String(h) + ", " + String(t) + ", ";
 }

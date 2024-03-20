@@ -2,7 +2,7 @@
 #define GEIGERSENSOR_H
 
 #include "Sensor.h"
-#include <string>
+#include <string.h>
 #include <Arduino.h>
 // need to changed to the correct ones
 #define RX 0
