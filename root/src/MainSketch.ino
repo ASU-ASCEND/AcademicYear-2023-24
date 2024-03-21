@@ -93,6 +93,29 @@ void setRGBLED(char color, int val){
 
 
 void setup(){
+  // on which multiplies of iteration count it will get sensor data (default is 1)
+  // iteration based
+  // bme680->setPeriod(    10);
+  // sht31->setPeriod(     10);
+  // lsm9ds1->setPeriod(   1); 
+  // lsm6dsox->setPeriod(  1);
+  // sgp30->setPeriod(     10);
+  // ina260->setPeriod(    1);
+  // mtk3339->setPeriod(   10);
+  // analog->setPeriod(    1);
+  // geigerSlow->setPeriod(10);
+  // uv->setPeriod(        10);
+  bme680->setPeriod(    100); // in ms
+  sht31->setPeriod(     100);
+  lsm9ds1->setPeriod(   0); 
+  lsm6dsox->setPeriod(  50);
+  sgp30->setPeriod(     100);
+  ina260->setPeriod(    0);
+  mtk3339->setPeriod(   100);
+  analog->setPeriod(    0);
+  geigerSlow->setPeriod(100);
+  uv->setPeriod(        100);
+
   //WiFi Nina color LED stuff
   pinMode(LEDR, OUTPUT);
   pinMode(LEDG, OUTPUT);
@@ -221,10 +244,17 @@ void loop(){
 
   // build csv row
   String ourData = String(millis()) + ", "; 
-
+  
   for(int i = 0; i < numSensors; i++){
     if(pinVerificationResults[i]){
-      ourData += sensors[i]->readData();
+      //if(it % sensors[i]->getPeriod() == 0){ for iteration tracking
+      if((millis() - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
+        ourData += sensors[i]->readData();
+        sensors[i]->setLastExecution(millis());
+      }
+      else {
+        ourData += sensors[i]->readEmpty();
+      }
     }
   }
 
@@ -250,7 +280,7 @@ void loop(){
   // any internal error 
   if(noPins || noFile){
     statusVal = statusVal % 10;
-    digitalWrite(STATUS_PIN, (statusVal < 5));
+    digitalWrite(STATUS_PIN, (statusVal < 8));
     statusVal++;
   }
   else if(noContinuity){
@@ -259,7 +289,7 @@ void loop(){
   }
   else {
     statusVal = statusVal % 10;
-    digitalWrite(STATUS_PIN, statusVal);
+    digitalWrite(STATUS_PIN, (statusVal < 3));
     statusVal++;
   }
   // PCB INDICATOR

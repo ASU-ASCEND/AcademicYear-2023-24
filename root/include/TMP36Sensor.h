@@ -17,7 +17,10 @@ public:
   const String& getSensorName() const override;
   const String& getSensorCSVHeader() const override; 
   bool verifyPin() override;
-  String readData() override; 
+  String readData() override;
+  String readEmpty() override {
+      return "-, ";
+  } 
 
 };
 
