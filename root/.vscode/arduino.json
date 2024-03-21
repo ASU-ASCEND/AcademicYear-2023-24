@@ -1,0 +1,4 @@
+{
+    "port": "/dev/tty.usbmodem1301",
+    "board": "arduino:mbed_nano:nanorp2040connect"
+}

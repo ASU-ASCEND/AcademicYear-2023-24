@@ -9,8 +9,8 @@
 
 class ZOPT220Sensor : public Sensor {
     private:
-        static constexpr const char* nameCompiled = "ZOPT220";
-        static constexpr const char* csvHeaderCompiled = "ZOPT220 , ";
+        String nameCompiled = "ZOPT220";
+        String csvHeaderCompiled = "ZOPT220 UV Index, ZOPT220 Ambient Light, ";
     public:
         const arduino::String& getSensorName() const override;
         const arduino::String& getSensorCSVHeader() const; 

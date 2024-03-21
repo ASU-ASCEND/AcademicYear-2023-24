@@ -11,8 +11,8 @@
 class BME680Sensor : public Sensor {
     private:
         Adafruit_BME680 bme;
-        static constexpr const char* nameCompiled = "BME680";
-        static constexpr const char* csvHeaderCompiled = "BME680 Temp C, BME680 Pressure hPa, BME680 Humidity %, BME680 Gas KOhms, BME680 Approx Alt m, ";
+        String nameCompiled = "BME680";
+        String csvHeaderCompiled = "BME680 Temp C, BME680 Pressure hPa, BME680 Humidity %, BME680 Gas KOhms, BME680 Approx Alt m, ";
     public:
         const String& getSensorName() const override;
         const String& getSensorCSVHeader() const; 

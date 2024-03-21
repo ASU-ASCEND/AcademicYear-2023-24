@@ -10,8 +10,8 @@
 class SHT31Sensor : public Sensor {
     private:
         Adafruit_SHT31 sht31;
-        static constexpr const char* nameCompiled = "SHT31";
-        static constexpr const char* csvHeaderCompiled = "SHT31 Hum %, SHT31 Temp C, ";
+        String nameCompiled = "SHT31";
+        String csvHeaderCompiled = "SHT31 Hum %, SHT31 Temp C, ";
     public:
         const arduino::String& getSensorName() const override;
         const arduino::String& getSensorCSVHeader() const; 

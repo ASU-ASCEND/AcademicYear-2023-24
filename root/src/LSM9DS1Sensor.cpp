@@ -16,6 +16,7 @@ bool LSM9DS1Sensor::verifyPin() {
 // returns in format AccX, AccY, AccZ, GyroX, GyroY, GyroZ, MagX, MagY, MagZ,
 String LSM9DS1Sensor::readData(){
     // return "-. -. -. -. -. -. -, -, -,";
+
     float accX, accY, accZ;
     IMU.readAcceleration(accX, accY, accZ);
 

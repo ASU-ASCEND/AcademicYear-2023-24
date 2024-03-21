@@ -10,7 +10,7 @@ const String& MTK3339Sensor::getSensorCSVHeader() const {
 }
 //Implementing virtual accessor function: verifyPin()
 bool MTK3339Sensor::verifyPin() {
-  if (GPS.begin(0x10)) {
+  if (!GPS.begin(0x10)) { // returns 0 on success
     GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
     GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
     delay(1000);
