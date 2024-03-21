@@ -8,7 +8,7 @@
 #include <Arduino.h>
 // need to changed to the correct ones
 #define GEIGER_PIN A2
-#define MILLIS_BETWEEN_READINGS 10000 // 10 seconds
+#define MILLIS_BETWEEN_READINGS 1000 // 10 seconds
 
 class GeigerSlowSensor : public Sensor {
     private:

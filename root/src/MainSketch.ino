@@ -15,7 +15,8 @@
 #include "GeigerSlowSensor.h"
 #include "ZOPT220Sensor.h"
 #include "LSM6DSOXSensor.h"
-#include "MAX31865Sensor.h"
+#include "WiFiNINA.h"
+
 //#include "SDCard.h"
 
 #include <Arduino.h>
@@ -32,10 +33,6 @@
 
 #define SD_CHIP_SELECT 7
 
-// indicator flags
-// bool errorFlag = false;
-// bool noContinuity = false;
-
 //Create class objects
 // MISO MOSI CS TX RX
 TMP36Sensor* tmp36 = new TMP36Sensor();
@@ -50,8 +47,9 @@ AnalogSensor* analog = new AnalogSensor();
 //GeigerSensor* geiger = new GeigerSensor();
 GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
 ZOPT220Sensor* uv = new ZOPT220Sensor();
-MAX31865Sensor* pt = new MAX31865Sensor();
 // SDCard* sd = new SDCard();
+
+#define DEFAULT_CLASSES 4
 
 #define LED_PIN 9
 #define STATUS_PIN 10
@@ -61,7 +59,8 @@ MAX31865Sensor* pt = new MAX31865Sensor();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow, pt};
+Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow };
+// Sensor* sensors[] = {lsm9ds1, lsm6dsox, ina260, analog, geigerSlow};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];
@@ -71,9 +70,41 @@ File myFile;
 // #define fileName "newtest0.csv"
 String fileName; 
 
+bool noContinuity = false;
+bool noPins = false;
+bool noFile = false;
+
+int ledVal = LOW;
+int statusVal = LOW;
+int rgbVal = LOW; 
+
+// interrupt
+int timer = millis();
+int inLoop = false;
+
+// b - no sd, g - no pin, r - no file
+
+// specify 'r' 'g' or 'b' to set that color, anything else to turn it off
+void setRGBLED(char color, int val){
+  digitalWrite(LEDR, ((color == 'r' && val)? HIGH : LOW));
+  digitalWrite(LEDG, ((color == 'g' && val)? HIGH : LOW));
+  digitalWrite(LEDB, ((color == 'b' && val)? HIGH : LOW));
+}
+
+
 void setup(){
+  //WiFi Nina color LED stuff
+  pinMode(LEDR, OUTPUT);
+  pinMode(LEDG, OUTPUT);
+  pinMode(LEDB, OUTPUT);
+  setRGBLED('n', rgbVal);
+  // internal LED - blinks with main
+  pinMode(LED_PIN, OUTPUT);
+  // status LED - external - on to mean all good 
+  pinMode(STATUS_PIN, OUTPUT);
+  digitalWrite(STATUS_PIN, HIGH);
   Serial.begin(115200);
-  delay(10000);
+  delay(5000);
   // Call verifyPin() to check status of successful sensor communication
   if (verifyPin()) {
       Serial.println("Moving on. At least one sensor has successful communication.");
@@ -90,7 +121,15 @@ void setup(){
 
   while(!SD.begin(SD_CHIP_SELECT)){
     Serial.println("SD Card not working");
+    // status pin
+    statusVal = !statusVal;
+    digitalWrite(STATUS_PIN, statusVal);
+    rgbVal = !rgbVal;
+    setRGBLED('b', rgbVal);
+    delay(600);
   }
+  statusVal = HIGH;
+  setRGBLED('n', rgbVal);
   Serial.println("SD Card Working"); 
 
   fileName = "data.csv";
@@ -98,7 +137,7 @@ void setup(){
   for (int i = 0; i < 1000; i++) {
     fileName = "d" + String(i) + ".csv";
     if (!SD.exists(fileName)) {
-        //if(i > 0) noContinuity = true;
+        if(i > 0) noContinuity = true;
         // Name the file for writing
         Serial.println("Opened new file: " + fileName);
         break;
@@ -113,9 +152,11 @@ void setup(){
     myFile.println(data);
     myFile.close();
     Serial.println("done.");
+    noFile = false;
   }
   else {
     Serial.println("Can't write setup 1");
+    noFile = true;
   }
 
 
@@ -127,9 +168,11 @@ void setup(){
     }
     myFile.close();
     Serial.println("\nDone.");
+    noFile = false;
   }
   else {
     Serial.println("Can't read setup");
+    noFile = true; 
   }
 
   // //Initialise CSV header to SD card
@@ -148,9 +191,11 @@ void setup(){
     myFile.println(header);
     myFile.close();
     Serial.println("done.");
+    noFile = true;
   }
   else {
     Serial.println("Error opening setup");
+    noFile = false;
   }
 
   
@@ -158,12 +203,23 @@ void setup(){
   // fileObject.println(header);
   // fileObject.close();
   // delay(1000);
+
 }
-bool ledVal = 0;
-// bool statusVal = 0;
+
+int it = 0;
 void loop(){
+  it++;
+  Serial.println("it: " + String(it));
+  // inLoop = true;
+  // timer = millis();
+
+  // all good 
+  // if(!errorFlag && !noContinuity){
+  //   digitalWrite(STATUS_PIN, HIGH);
+  // }
   delay(100);
 
+  // build csv row
   String ourData = String(millis()) + ", "; 
 
   for(int i = 0; i < numSensors; i++){
@@ -172,40 +228,53 @@ void loop(){
     }
   }
 
+  // print csv row
   Serial.println(ourData);
+
+  // save csv row to SD card
   myFile = SD.open(fileName, FILE_WRITE);
 
   if(myFile){
     myFile.println(ourData);
     myFile.close();
     Serial.println("done.");
+    noFile = false;
   }
   else {
     Serial.println("Can't write loop");
+    noFile = true;
   }
 
-
-  // myFile = SD.open(fileName, FILE_READ);
-
-  // if(myFile){
-  //   while(myFile.available()){
-  //     Serial.write(myFile.read());
-  //   }
-  //   myFile.close();
-  //   Serial.println("\nDone.");
-  // }
-  // else {
-  //   Serial.println("Can't read loop");
-  // }
-
-  //Writes data into SD Card if communication with SD Card and at least one SD Card is successful
-  // writeData();
+  // blink indicators for errors
+  // EXTERNAL INDICATOR
+  // any internal error 
+  if(noPins || noFile){
+    statusVal = statusVal % 10;
+    digitalWrite(STATUS_PIN, (statusVal < 5));
+    statusVal++;
+  }
+  else if(noContinuity){
+    digitalWrite(STATUS_PIN, statusVal);
+    statusVal = !statusVal;
+  }
+  else {
+    statusVal = statusVal % 10;
+    digitalWrite(STATUS_PIN, statusVal);
+    statusVal++;
+  }
+  // PCB INDICATOR
   digitalWrite(LED_PIN, ledVal);
   ledVal = !ledVal;
-  // if(noContinuity){
-  //   digitalWrite(STATUS_PIN, statusVal);
-  //   statusVal = !statusVal;
-  // }
+  // if no continuity then blink statusVal with main
+  // COLOR INDICATOR
+  if(noFile){
+    rgbVal = !rgbVal;
+    setRGBLED('r', rgbVal);
+  }
+  else if(noPins){
+    rgbVal = !rgbVal;
+    setRGBLED('g', rgbVal);
+  }
   // delay(500);
 }
 
@@ -221,12 +290,15 @@ bool verifyPin() {
     Serial.println(pinVerificationResults[i] ? "Successful in Communication" : "Failure in Communication (check wirings and/ or pin definitions in the respective sensor header file)");
   }
   Serial.println();
+
+  int count = 0; 
   for (int i = 0; i < numSensors; ++i) {
-        if (pinVerificationResults[i]) {   
-          return true;  // At least one pin verification passed
-        }
-    }
-    return false; // All pin verification failed
+      if (pinVerificationResults[i]) {   
+        count++; 
+      }
+  }
+  noPins = count <= DEFAULT_CLASSES;
+  return count != 0;  // At least one pin verification passed
 }
 
 void writeData(){

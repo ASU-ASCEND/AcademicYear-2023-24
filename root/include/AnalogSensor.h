@@ -8,7 +8,7 @@
 #include <Arduino.h>
 // need to changed to the correct ones
 #define WIND_PIN A0
-#define PT1000_PIN A1
+#define PT1000_PIN A3
 
 class AnalogSensor : public Sensor {
     private:
