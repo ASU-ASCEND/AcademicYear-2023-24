@@ -70,6 +70,9 @@ File myFile;
 // #define fileName "newtest0.csv"
 String fileName; 
 
+#define INDICATION_PERIOD 1000
+int lastIndication = 0;
+
 bool noContinuity = false;
 bool noPins = false;
 bool noFile = false;
@@ -78,9 +81,6 @@ int ledVal = LOW;
 int statusVal = LOW;
 int rgbVal = LOW; 
 
-// interrupt
-int timer = millis();
-int inLoop = false;
 
 // b - no sd, g - no pin, r - no file
 
@@ -105,16 +105,16 @@ void setup(){
   // analog->setPeriod(    1);
   // geigerSlow->setPeriod(10);
   // uv->setPeriod(        10);
-  bme680->setPeriod(    100); // in ms
-  sht31->setPeriod(     100);
+  bme680->setPeriod(    2000); // in ms
+  sht31->setPeriod(     2000);
   lsm9ds1->setPeriod(   0); 
-  lsm6dsox->setPeriod(  50);
-  sgp30->setPeriod(     100);
-  ina260->setPeriod(    0);
-  mtk3339->setPeriod(   100);
-  analog->setPeriod(    0);
-  geigerSlow->setPeriod(100);
-  uv->setPeriod(        100);
+  lsm6dsox->setPeriod(  2000);
+  sgp30->setPeriod(     2000);
+  ina260->setPeriod(    2000);
+  mtk3339->setPeriod(   2000);
+  analog->setPeriod(    2000);
+  geigerSlow->setPeriod(2000);
+  uv->setPeriod(        2000);
 
   //WiFi Nina color LED stuff
   pinMode(LEDR, OUTPUT);
@@ -244,16 +244,25 @@ void loop(){
 
   // build csv row
   String ourData = String(millis()) + ", "; 
+  int now = millis();
   
   for(int i = 0; i < numSensors; i++){
     if(pinVerificationResults[i]){
       //if(it % sensors[i]->getPeriod() == 0){ for iteration tracking
-      if((millis() - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
+      if((now - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
         ourData += sensors[i]->readData();
-        sensors[i]->setLastExecution(millis());
       }
       else {
         ourData += sensors[i]->readEmpty();
+      }
+    }
+  }
+  int after = millis();
+  for(int i = 0; i < numSensors; i++){
+    if(pinVerificationResults[i]){
+      //if(it % sensors[i]->getPeriod() == 0){ for iteration tracking
+      if((now - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
+        sensors[i]->setLastExecution(after);
       }
     }
   }
@@ -278,20 +287,32 @@ void loop(){
   // blink indicators for errors
   // EXTERNAL INDICATOR
   // any internal error 
-  if(noPins || noFile){
-    statusVal = statusVal % 10;
-    digitalWrite(STATUS_PIN, (statusVal < 8));
-    statusVal++;
+  if(millis() - lastIndication > INDICATION_PERIOD){
+    lastIndication = millis();
+    if(noPins || noFile){
+      for(int i = 0; i < 1*2; i++){
+        statusVal = !statusVal;
+        digitalWrite(STATUS_PIN, statusVal);
+        delay(100);
+      }
+    }
+    else if(noContinuity){
+      for(int i = 0; i < 2*2; i++){
+        statusVal = !statusVal;
+        digitalWrite(STATUS_PIN, statusVal);
+        delay(100);
+      }
+    }
+    else {
+      for(int i = 0; i < 3*2; i++){
+        statusVal = !statusVal;
+        digitalWrite(STATUS_PIN, statusVal);
+        delay(100);
+      }
+    }
+    digitalWrite(STATUS_PIN, HIGH);
   }
-  else if(noContinuity){
-    digitalWrite(STATUS_PIN, statusVal);
-    statusVal = !statusVal;
-  }
-  else {
-    statusVal = statusVal % 10;
-    digitalWrite(STATUS_PIN, (statusVal < 3));
-    statusVal++;
-  }
+  
   // PCB INDICATOR
   digitalWrite(LED_PIN, ledVal);
   ledVal = !ledVal;

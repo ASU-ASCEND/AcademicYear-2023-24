@@ -18,7 +18,7 @@ class LSM6DSOXSensor : public Sensor {
         bool verifyPin() override;
         String readData() override;
         String readEmpty() override {
-            return "-, -, -, -, -, -, ";
+            return "-, -, -, -, -, -, -, ";
         }
 };
 
