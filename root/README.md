@@ -4,11 +4,11 @@ ANY SOLID LEDS --> BOARD HAS FROZEN
 (No Pins means less than 4 devices were found - indicates that a large chuck of the sensors did not work)
 
 ## External LED
-| Status                | Code                                              |
+| Status                | Code (currently shown about every seond )         |
 |--------               |------                                             |
-|ALL GOOD               |Long Blink Short Off                               | 
-|Power Distruption      | Blink w/ main                                     |
-|No Pins / No File      | Long Blink Long Off                               |
+|ALL GOOD               | 3 off blink                                       | 
+|Power Distruption      | 2 off blink                                       |
+|No Pins / No File      | 1 off blink                                       |
 |Error Opening SD Card  | Slow even blink (toggles every 600 ms with blue)  |
 
 ## Internal LED
