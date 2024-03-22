@@ -16,6 +16,7 @@
 #include "ZOPT220Sensor.h"
 #include "LSM6DSOXSensor.h"
 #include "WiFiNINA.h"
+#include "GeigerInterrupt.h"
 
 //#include "SDCard.h"
 
@@ -45,7 +46,8 @@ INA260Sensor* ina260 = new INA260Sensor();
 MTK3339Sensor* mtk3339 = new MTK3339Sensor();
 AnalogSensor* analog = new AnalogSensor();
 //GeigerSensor* geiger = new GeigerSensor();
-GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
+// GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
+GeigerInterrupt* gInterrupt = new GeigerInterrupt();
 ZOPT220Sensor* uv = new ZOPT220Sensor();
 // SDCard* sd = new SDCard();
 
@@ -59,7 +61,7 @@ ZOPT220Sensor* uv = new ZOPT220Sensor();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow };
+Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, gInterrupt}; //geigerSlow };
 // Sensor* sensors[] = {lsm9ds1, lsm6dsox, ina260, analog, geigerSlow};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
@@ -113,7 +115,8 @@ void setup(){
   ina260->setPeriod(    2000);
   mtk3339->setPeriod(   2000);
   analog->setPeriod(    2000);
-  geigerSlow->setPeriod(2000);
+  // geigerSlow->setPeriod(2000);
+  gInterrupt->setPeriod(2000);
   uv->setPeriod(        2000);
 
   //WiFi Nina color LED stuff
