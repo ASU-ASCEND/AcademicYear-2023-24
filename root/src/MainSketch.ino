@@ -17,7 +17,7 @@
 #include "LSM6DSOXSensor.h"
 #include "WiFiNINA.h"
 
-//#include "SDCard.h"
+//#include "SDCard.h" - could not get the SD card working with it's own class
 
 #include <Arduino.h>
 
@@ -60,14 +60,11 @@ void writeData();
 
 // Create an array of Sensor pointers
 Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow };
-// Sensor* sensors[] = {lsm9ds1, lsm6dsox, ina260, analog, geigerSlow};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];
 
 File myFile;
-
-// #define fileName "newtest0.csv"
 String fileName; 
 
 #define INDICATION_PERIOD 1000
@@ -82,7 +79,7 @@ int statusVal = LOW;
 int rgbVal = LOW; 
 
 
-// b - no sd, g - no pin, r - no file
+// b - no sd recognized, g - no sensors plugged in, r - no file can be written
 
 // specify 'r' 'g' or 'b' to set that color, anything else to turn it off
 void setRGBLED(char color, int val){
@@ -93,18 +90,7 @@ void setRGBLED(char color, int val){
 
 
 void setup(){
-  // on which multiplies of iteration count it will get sensor data (default is 1)
-  // iteration based
-  // bme680->setPeriod(    10);
-  // sht31->setPeriod(     10);
-  // lsm9ds1->setPeriod(   1); 
-  // lsm6dsox->setPeriod(  1);
-  // sgp30->setPeriod(     10);
-  // ina260->setPeriod(    1);
-  // mtk3339->setPeriod(   10);
-  // analog->setPeriod(    1);
-  // geigerSlow->setPeriod(10);
-  // uv->setPeriod(        10);
+  
   bme680->setPeriod(    2000); // in ms
   sht31->setPeriod(     2000);
   lsm9ds1->setPeriod(   0); 
@@ -248,7 +234,6 @@ void loop(){
   
   for(int i = 0; i < numSensors; i++){
     if(pinVerificationResults[i]){
-      //if(it % sensors[i]->getPeriod() == 0){ for iteration tracking
       if((now - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
         ourData += sensors[i]->readData();
       }
@@ -260,7 +245,6 @@ void loop(){
   int after = millis();
   for(int i = 0; i < numSensors; i++){
     if(pinVerificationResults[i]){
-      //if(it % sensors[i]->getPeriod() == 0){ for iteration tracking
       if((now - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
         sensors[i]->setLastExecution(after);
       }
