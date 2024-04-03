@@ -16,8 +16,9 @@
 #include "ZOPT220Sensor.h"
 #include "LSM6DSOXSensor.h"
 #include "WiFiNINA.h"
+#include "GeigerInterrupt.h"
 
-//#include "SDCard.h"
+//#include "SDCard.h" - could not get the SD card working with it's own class
 
 #include <Arduino.h>
 
@@ -45,7 +46,8 @@ INA260Sensor* ina260 = new INA260Sensor();
 MTK3339Sensor* mtk3339 = new MTK3339Sensor();
 AnalogSensor* analog = new AnalogSensor();
 //GeigerSensor* geiger = new GeigerSensor();
-GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
+// GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
+GeigerInterrupt* gInterrupt = new GeigerInterrupt();
 ZOPT220Sensor* uv = new ZOPT220Sensor();
 // SDCard* sd = new SDCard();
 
@@ -59,16 +61,17 @@ ZOPT220Sensor* uv = new ZOPT220Sensor();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geigerSlow };
+Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, gInterrupt}; //geigerSlow };
 // Sensor* sensors[] = {lsm9ds1, lsm6dsox, ina260, analog, geigerSlow};
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];
 
 File myFile;
-
-// #define fileName "newtest0.csv"
 String fileName; 
+
+#define INDICATION_PERIOD 1000
+int lastIndication = 0;
 
 bool noContinuity = false;
 bool noPins = false;
@@ -78,11 +81,8 @@ int ledVal = LOW;
 int statusVal = LOW;
 int rgbVal = LOW; 
 
-// interrupt
-int timer = millis();
-int inLoop = false;
 
-// b - no sd, g - no pin, r - no file
+// b - no sd recognized, g - no sensors plugged in, r - no file can be written
 
 // specify 'r' 'g' or 'b' to set that color, anything else to turn it off
 void setRGBLED(char color, int val){
@@ -93,6 +93,19 @@ void setRGBLED(char color, int val){
 
 
 void setup(){
+  
+  bme680->setPeriod(    2000); // in ms
+  sht31->setPeriod(     2000);
+  lsm9ds1->setPeriod(   0); 
+  lsm6dsox->setPeriod(  2000);
+  sgp30->setPeriod(     2000);
+  ina260->setPeriod(    2000);
+  mtk3339->setPeriod(   2000);
+  analog->setPeriod(    2000);
+  // geigerSlow->setPeriod(2000);
+  gInterrupt->setPeriod(2000);
+  uv->setPeriod(        2000);
+
   //WiFi Nina color LED stuff
   pinMode(LEDR, OUTPUT);
   pinMode(LEDG, OUTPUT);
@@ -221,10 +234,24 @@ void loop(){
 
   // build csv row
   String ourData = String(millis()) + ", "; 
-
+  int now = millis();
+  
   for(int i = 0; i < numSensors; i++){
     if(pinVerificationResults[i]){
-      ourData += sensors[i]->readData();
+      if((now - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
+        ourData += sensors[i]->readData();
+      }
+      else {
+        ourData += sensors[i]->readEmpty();
+      }
+    }
+  }
+  int after = millis();
+  for(int i = 0; i < numSensors; i++){
+    if(pinVerificationResults[i]){
+      if((now - sensors[i]->getLastExecution()) > sensors[i]->getPeriod()){
+        sensors[i]->setLastExecution(after);
+      }
     }
   }
 
@@ -248,20 +275,32 @@ void loop(){
   // blink indicators for errors
   // EXTERNAL INDICATOR
   // any internal error 
-  if(noPins || noFile){
-    statusVal = statusVal % 10;
-    digitalWrite(STATUS_PIN, (statusVal < 5));
-    statusVal++;
+  if(millis() - lastIndication > INDICATION_PERIOD){
+    lastIndication = millis();
+    if(noPins || noFile){
+      for(int i = 0; i < 1*2; i++){
+        statusVal = !statusVal;
+        digitalWrite(STATUS_PIN, statusVal);
+        delay(100);
+      }
+    }
+    else if(noContinuity){
+      for(int i = 0; i < 2*2; i++){
+        statusVal = !statusVal;
+        digitalWrite(STATUS_PIN, statusVal);
+        delay(100);
+      }
+    }
+    else {
+      for(int i = 0; i < 3*2; i++){
+        statusVal = !statusVal;
+        digitalWrite(STATUS_PIN, statusVal);
+        delay(100);
+      }
+    }
+    digitalWrite(STATUS_PIN, HIGH);
   }
-  else if(noContinuity){
-    digitalWrite(STATUS_PIN, statusVal);
-    statusVal = !statusVal;
-  }
-  else {
-    statusVal = statusVal % 10;
-    digitalWrite(STATUS_PIN, statusVal);
-    statusVal++;
-  }
+  
   // PCB INDICATOR
   digitalWrite(LED_PIN, ledVal);
   ledVal = !ledVal;

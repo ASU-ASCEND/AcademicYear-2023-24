@@ -17,6 +17,9 @@ class GeigerSensor : public Sensor {
         const String& getSensorCSVHeader() const; 
         bool verifyPin() override;
         String readData() override;
+        String readEmpty() override {
+            return "-, -,  -, -,";
+        }
 };
 
 #endif

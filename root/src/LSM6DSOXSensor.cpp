@@ -10,12 +10,12 @@ const String& LSM6DSOXSensor::getSensorCSVHeader() const {
 
 bool LSM6DSOXSensor::verifyPin() {
     // return false;
-    return IMU.begin();
+    bool connection = IMU.begin();
+    IMU.end();
+    return connection;
 }
-
 // returns in format AccX, AccY, AccZ, GyroX, GyroY, GyroZ, Temp
-String LSM6DSOXSensor::readData(){
-    // return "-. -. -. -. -. -. ";
+String readIMUData() {
     float gyroX, gyroY, gyroZ;
     IMU.readGyroscope(gyroX, gyroY, gyroZ);
 
@@ -26,5 +26,15 @@ String LSM6DSOXSensor::readData(){
     IMU.readTemperatureFloat(temp);
 
     return String(accX) + ", " + String(accY) + ", " + String(accZ) + ", " + String(gyroX) + ", " + String(gyroY) + ", " + String(gyroZ) + ", " + String(temp) + ", "; 
+}
 
+// returns in format AccX, AccY, AccZ, GyroX, GyroY, GyroZ, Temp
+String LSM6DSOXSensor::readData(){
+    // return "-. -. -. -. -. -. ";
+    if(IMU.begin()) {
+        return readIMUData();
+    }
+    else {
+        return "-, -, -, -, -, -, -, ";
+    }
 }

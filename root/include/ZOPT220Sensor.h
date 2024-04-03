@@ -16,6 +16,9 @@ class ZOPT220Sensor : public Sensor {
         const arduino::String& getSensorCSVHeader() const; 
         bool verifyPin() override;
         arduino::String readData() override;
+        String readEmpty() override {
+            return "-, -, ";
+        }
 };
 
 #endif
