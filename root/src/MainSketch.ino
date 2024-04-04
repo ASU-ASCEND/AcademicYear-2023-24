@@ -11,14 +11,10 @@
 #include "INA260Sensor.h"
 #include "MTK3339Sensor.h"
 #include "AnalogSensor.h"
-//#include "GeigerSensor.h"
-#include "GeigerSlowSensor.h"
 #include "ZOPT220Sensor.h"
 #include "LSM6DSOXSensor.h"
 #include "WiFiNINA.h"
-#include "GeigerInterrupt.h"
-
-//#include "SDCard.h" - could not get the SD card working with it's own class
+#include "GeigerSensor.h"
 
 #include <Arduino.h>
 
@@ -45,11 +41,8 @@ SGP30Sensor* sgp30 = new SGP30Sensor();
 INA260Sensor* ina260 = new INA260Sensor();
 MTK3339Sensor* mtk3339 = new MTK3339Sensor();
 AnalogSensor* analog = new AnalogSensor();
-//GeigerSensor* geiger = new GeigerSensor();
-// GeigerSlowSensor* geigerSlow = new GeigerSlowSensor();
-GeigerInterrupt* gInterrupt = new GeigerInterrupt();
+GeigerSensor* geiger = new GeigerSensor();
 ZOPT220Sensor* uv = new ZOPT220Sensor();
-// SDCard* sd = new SDCard();
 
 #define DEFAULT_CLASSES 4
 
@@ -61,8 +54,7 @@ ZOPT220Sensor* uv = new ZOPT220Sensor();
 void writeData();
 
 // Create an array of Sensor pointers
-Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, gInterrupt}; //geigerSlow };
-// Sensor* sensors[] = {lsm9ds1, lsm6dsox, ina260, analog, geigerSlow};
+Sensor* sensors[] = {bme680, sht31, lsm9ds1, lsm6dsox, sgp30, ina260, mtk3339, analog, uv, geiger}; 
 // Create a global int for Size of sensors[]
 const int numSensors = sizeof(sensors) / sizeof(sensors[0]);
 bool pinVerificationResults[numSensors];
@@ -103,7 +95,7 @@ void setup(){
   mtk3339->setPeriod(   2000);
   analog->setPeriod(    2000);
   // geigerSlow->setPeriod(2000);
-  gInterrupt->setPeriod(2000);
+  geiger->setPeriod(2000);
   uv->setPeriod(        2000);
 
   //WiFi Nina color LED stuff
@@ -124,13 +116,6 @@ void setup(){
   } else {
       Serial.println("Stopping Execution. All sensor communications failed.");
   }
-  // //verify comms with SD Card
-  // if (sd->verifyPin()) {
-  //  Serial.println("Moving on. SD card has successful communication");
-  // }
-  // else {
-  //   Serial.println("SD card communication failed");
-  // }
 
   while(!SD.begin(SD_CHIP_SELECT)){
     Serial.println("SD Card not working");
@@ -211,25 +196,12 @@ void setup(){
     noFile = false;
   }
 
-  
-  // fileObject = SD.open(logFileName, FILE_WRITE);
-  // fileObject.println(header);
-  // fileObject.close();
-  // delay(1000);
-
 }
 
 int it = 0;
 void loop(){
   it++;
   Serial.println("it: " + String(it));
-  // inLoop = true;
-  // timer = millis();
-
-  // all good 
-  // if(!errorFlag && !noContinuity){
-  //   digitalWrite(STATUS_PIN, HIGH);
-  // }
   delay(100);
 
   // build csv row
@@ -343,12 +315,6 @@ bool verifyPin() {
 void writeData(){
   String output = String(millis()) + ", ";
 
-  // for(int i = 0; i < numSensors; i++){
-  //   if(pinVerificationResults[i]){
-  //     output += sensors[i]->readData();
-  //   }
-  // }
-
   Serial.println(output);
 
   myFile = SD.open(fileName, FILE_WRITE);
@@ -376,32 +342,4 @@ void writeData(){
     Serial.println("Can't write");
   }
 
-  // myFile = SD.open(fileName, FILE_WRITE);
-
-  // if(myFile){
-  // //   myFile.println(output);
-  //   myFile.close();
-  // //   Serial.println("done.");
-  // }
-  // else {
-  //   Serial.println("Error opening");
-  // }
-  // delay(2000);
-
-  // myFile = SD.open(fileName, FILE_READ);
-
-  // if(myFile){
-  //   while(myFile.available()){
-  //     Serial.write(myFile.read());
-  //   }
-  //   myFile.close();
-  //   Serial.println("\nDone.");
-  // }
-  // else {
-  //   Serial.println("Can't write");
-  // }
-  //sd->writeData(output);
-  // fileObject = SD.open(logFileName, FILE_WRITE);
-  // fileObject.println(output);
-  // fileObject.close();
 }
