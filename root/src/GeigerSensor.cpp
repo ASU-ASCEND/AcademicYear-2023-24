@@ -1,42 +1,26 @@
 #include "GeigerSensor.h"
 
-const String& GeigerSensor::getSensorName() const {
+const String& GeigerSensor::getSensorName() const{
     return nameCompiled;
 }
-
-const String& GeigerSensor::getSensorCSVHeader() const {
+const String& GeigerSensor::getSensorCSVHeader() const{
     return csvHeaderCompiled;
 }
 
-bool GeigerSensor::verifyPin() {
-    Serial.begin(9600, SERIAL_8N1); // default protocal - added to be explicit 
-    return Serial;
+bool GeigerSensor::verifyPin(){
+    attachInterrupt(digitalPinToInterrupt(GEIGER_PIN), geigerCounter, FALLING);
+    measuringPeriodStart = millis();
+    return true;
 }
-
 String GeigerSensor::readData(){
+    int samplePeriod = millis() - measuringPeriodStart;
 
-    // reads serial output --> "CPS, #####, CPM, #####, uSv/hr, ###.##, SLOW|FAST|INST"
-    // I think it's deliminated by CRLF (carriage return, line feed)
-    Serial.flush(); 
-    Serial.readStringUntil('\r');
-    String input = Serial.readStringUntil('\r'); // read the line 
+    noInterrupts();
+    float CPS = count / (samplePeriod / 1000.0);
+    count = 0;
+    interrupts();
 
+    measuringPeriodStart = millis();
 
-    return input;
-    // String str = "";
-    // String values[7] = {"", "", "", "", "", "", "",};
-    // int curr = 0;
-    // for(unsigned int i = 0; i < input.length(); i++){
-    //     if(input[i] != '\n' && input[i] != '\r' && input[i] != ',' && input[i] != ' '){
-    //         str += input[i];
-    //     }
-    //     if(input[i] == ','){
-    //         values[curr] = str;
-    //         str = "";
-    //         curr++;
-    //     }
-    // }
-
-    // return values[1] + ", " + values[3] + ", " + values[5] + ", " + values[6] + ", ";
-    
+    return String(CPS) + ", ";
 }
