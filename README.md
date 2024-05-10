@@ -1,7 +1,7 @@
 # Academic Year 2023-24
 This year's source code is in [root](/root/)
 
-Usable builds (in .uf2 file form) are in [root/builds](/root/builds/)
+Usable builds (in .uf2 file form) are in [root/builds/](/root/builds/)
 
 ### Microcontroller:
 [Arduino Nano Connect RP2040](https://docs.arduino.cc/hardware/nano-rp2040-connect/)
