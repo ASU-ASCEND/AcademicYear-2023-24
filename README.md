@@ -1,4 +1,6 @@
 # Academic Year 2023-24
+This year's source code is in [root](/root/)
+
 ### Microcontroller:
 [Arduino Nano Connect RP2040](https://docs.arduino.cc/hardware/nano-rp2040-connect/)
 
